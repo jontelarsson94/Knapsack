@@ -44,11 +44,6 @@ int main(int argc, const char * argv[])
     
     sortByRatio(benefit, weight, ratio, n);
     
-    for(int i = 0; i < n; i++)
-    {
-        cout << benefit[i] << endl;
-    }
-    
     int currentW = 0;
     int maxProf = 0;
     for(int i = 0; i < n; i++) {
@@ -58,7 +53,6 @@ int main(int argc, const char * argv[])
         }
     }
     
-    cout << currentW << endl;
     cout << maxProf;
     
     return 0;
