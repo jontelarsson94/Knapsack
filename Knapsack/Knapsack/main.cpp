@@ -60,7 +60,8 @@ int main(int argc, const char * argv[])
     
     Node *node = new Node(NULL, 0, 0, 0, false);
     
-    KnapsackDFS(bestNode, node, benefit, weight, n, W);
+    KnapsackBFS(bestNode, node, benefit, weight, n, W);
+    //KnapsackDFS(bestNode, node, benefit, weight, n, W);
     
     
     cout << "The biggest benefit we can get is: " << bestNode->benefitFromStart << endl;
@@ -93,23 +94,25 @@ int main(int argc, const char * argv[])
     return 0;
 }
 
-
+//Knapsack with BFS
 void KnapsackBFS(Node *bestNode, Node *node, int benefit[], int weight[], int size, int maxWeight)
 {
-    
-    int counter = 0;
-    
+    //Using queue
     nodes.push(node);
     
+    //While we have nodes to build tree from
     while(!nodes.empty()) {
         
         Node *parent = nodes.front();
         
+        //Take the oldest item from queue
         nodes.pop();
         
+        //Set children to push in the queue
         Node *left = new Node(parent, parent->benefitFromStart + benefit[parent->id], parent->weightFromStart + weight[parent->id], parent->id+1, true);
         Node *right = new Node(parent, parent->benefitFromStart, parent->weightFromStart, parent->id+1, false);
         
+        //If we still have chance to build longer path
         if(left->weightFromStart < maxWeight)
         {
             if(parent->id < size){
@@ -128,27 +131,29 @@ void KnapsackBFS(Node *bestNode, Node *node, int benefit[], int weight[], int si
             nodes.push(right);
         }
         
-        //cout << bestNode->benefitFromStart << endl;
-        
     }
 }
 
+//Knapsack with DFS
 void KnapsackDFS(Node *bestNode, Node *node, int benefit[], int weight[], int size, int maxWeight)
 {
-    
-    int counter = 0;
-    
+    //Using stack
     nodes2.push(node);
     
+    //While we have nodes to build tree from
     while(!nodes2.empty()) {
         
         Node *parent = nodes2.top();
         
+        //Take newest item from stack
         nodes2.pop();
         
+        //Set children to push in the stack
         Node *left = new Node(parent, parent->benefitFromStart + benefit[parent->id], parent->weightFromStart + weight[parent->id], parent->id+1, true);
         Node *right = new Node(parent, parent->benefitFromStart, parent->weightFromStart, parent->id+1, false);
         
+        
+        //If we still have chance to build longer path
         if(left->weightFromStart < maxWeight)
         {
             if(parent->id < size){
@@ -163,17 +168,16 @@ void KnapsackDFS(Node *bestNode, Node *node, int benefit[], int weight[], int si
                 bestNode->changeValues(left->parent, left->benefitFromStart, left->weightFromStart, left->id, left->taken);
             }
         }
+        
         if(parent->id < size){
             nodes2.push(right);
         }
-        
-        //cout << bestNode->benefitFromStart << endl;
         
     }
 }
 
 
-void sortByRatio(float benefit[], float weight[], float ratio[], int size)
+/*void sortByRatio(float benefit[], float weight[], float ratio[], int size)
 {
     
     for(int i = 0; i < size; i++) {
@@ -191,4 +195,4 @@ void sortByRatio(float benefit[], float weight[], float ratio[], int size)
             }
         }
     }
-}
+}*/
