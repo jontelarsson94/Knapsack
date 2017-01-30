@@ -81,7 +81,9 @@ int main(int argc, const char * argv[])
     int W = 420;
     int n = sizeof(benefit)/sizeof(float);
     
-    //KnapsackBFS(benefit, weight, n, W);
+    cout << "BFS: ";
+    KnapsackBFS(benefit, weight, n, W);
+    cout << "\n\nDFS: ";
     KnapsackDFS(benefit, weight, n, W);
     
     return 0;
@@ -160,6 +162,11 @@ void KnapsackDFS(int benefit[], int weight[], int size, int maxWeight)
         left.taken[parent.id] = true;
         right.taken[parent.id] = false;
         
+        
+        if(right.weightFromStart < maxWeight && parent.id < size){
+            nodes2.push(right);
+        }
+        
         //If we still have chance to build longer path
         if(left.weightFromStart < maxWeight)
         {
@@ -174,9 +181,6 @@ void KnapsackDFS(int benefit[], int weight[], int size, int maxWeight)
             if(left.benefitFromStart > bestNode.benefitFromStart) {
                 bestNode.copyNode(left);
             }
-        }
-        if(right.weightFromStart < maxWeight && parent.id < size){
-            nodes2.push(right);
         }
     }
     cout << "The biggest benefit we can get is: " << bestNode.benefitFromStart << endl;
