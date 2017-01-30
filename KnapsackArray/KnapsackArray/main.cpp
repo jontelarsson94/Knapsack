@@ -71,8 +71,8 @@ int main(int argc, const char * argv[])
     int W = 420;
     int n = sizeof(benefit)/sizeof(float);
     
-    KnapsackBFS(benefit, weight, n, W);
-    //KnapsackDFS(bestNode, node, benefit, weight, n, W);
+    //KnapsackBFS(benefit, weight, n, W);
+    KnapsackDFS(benefit, weight, n, W);
     
     return 0;
 }
@@ -133,64 +133,55 @@ void KnapsackBFS(int benefit[], int weight[], int size, int maxWeight)
 }
 
 //Knapsack with DFS
-/*void KnapsackDFS(Node *bestNode, Node *node, int benefit[], int weight[], int size, int maxWeight)
+void KnapsackDFS(int benefit[], int weight[], int size, int maxWeight)
 {
+    Node bestNode(0, 0, 0);
+    Node node(0, 0, 0);
     //Using stack
     nodes2.push(node);
     
     //While we have nodes to build tree from
     while(!nodes2.empty()) {
         
-        Node *parent = nodes2.top();
+        Node parent = nodes2.top();
         
-        //Take newest item from stack
+        //Take the oldest item from queue
         nodes2.pop();
         
-        //Set children to push in the stack
-        Node *left = new Node(parent, parent->benefitFromStart + benefit[parent->id], parent->weightFromStart + weight[parent->id], parent->id+1, true);
-        Node *right = new Node(parent, parent->benefitFromStart, parent->weightFromStart, parent->id+1, false);
-        
+        //Set children to push in the queue
+        Node left(parent.benefitFromStart + benefit[parent.id], parent.weightFromStart + weight[parent.id], parent.id+1);
+        Node right(parent.benefitFromStart, parent.weightFromStart, parent.id+1);
+        left.copyTaken(parent);
+        right.copyTaken(parent);
+        left.taken[parent.id] = true;
+        right.taken[parent.id] = false;
         
         //If we still have chance to build longer path
-        if(left->weightFromStart < maxWeight)
+        if(left.weightFromStart < maxWeight)
         {
-            if(parent->id < size){
+            if(parent.id < size){
                 nodes2.push(left);
             }
             
-            if(parent->id == 0) {
-                bestNode->changeValues(left->parent, left->benefitFromStart, left->weightFromStart, left->id, left->taken);
+            if(parent.id == 0) {
+                bestNode.copyNode(left);
             }
             
-            if(left->benefitFromStart > bestNode->benefitFromStart) {
-                bestNode->changeValues(left->parent, left->benefitFromStart, left->weightFromStart, left->id, left->taken);
+            if(left.benefitFromStart > bestNode.benefitFromStart) {
+                bestNode.copyNode(left);
             }
         }
-        if(right->weightFromStart < maxWeight){
-            if(parent->id < size){
+        if(right.weightFromStart < maxWeight){
+            if(parent.id < size){
                 nodes2.push(right);
             }
         }
     }
-}*/
-
-
-/*void sortByRatio(float benefit[], float weight[], float ratio[], int size)
- {
- 
- for(int i = 0; i < size; i++) {
- for(int j = 0; j < size; j++) {
- if(ratio[i] > ratio[j]) {
- float save = ratio[j];
- ratio[j] = ratio[i];
- ratio[i] = save;
- save = benefit[j];
- benefit[j] = benefit[i];
- benefit[i] = save;
- save = weight[j];
- weight[j] = weight[i];
- weight[i] = save;
- }
- }
- }
- }*/
+    cout << "The biggest benefit we can get is: " << bestNode.benefitFromStart << endl;
+    cout << "The items we need to take is:" << endl;
+    for(int i = 0; i < 11; i++) {
+        if(bestNode.taken[i]) {
+            cout << i+1 << endl;
+        }
+    }
+}
