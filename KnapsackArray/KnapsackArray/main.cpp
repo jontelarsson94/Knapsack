@@ -117,17 +117,15 @@ void KnapsackBFS(int benefit[], int weight[], int size, int maxWeight)
                 bestNode.copyNode(left);
             }
         }
-        if(right.weightFromStart < maxWeight){
-            if(parent.id < size){
-                nodes.push(right);
-            }
+        if(right.weightFromStart < maxWeight && parent.id < size){
+            nodes.push(right);
         }
     }
     cout << "The biggest benefit we can get is: " << bestNode.benefitFromStart << endl;
     cout << "The items we need to take is:" << endl;
     for(int i = 0; i < 11; i++) {
         if(bestNode.taken[i]) {
-            cout << i+1 << endl;
+            cout << i+1 << ", ";
         }
     }
 }
@@ -171,10 +169,8 @@ void KnapsackDFS(int benefit[], int weight[], int size, int maxWeight)
                 bestNode.copyNode(left);
             }
         }
-        if(right.weightFromStart < maxWeight){
-            if(parent.id < size){
-                nodes2.push(right);
-            }
+        if(right.weightFromStart < maxWeight && parent.id < size){
+            nodes2.push(right);
         }
     }
     cout << "The biggest benefit we can get is: " << bestNode.benefitFromStart << endl;
