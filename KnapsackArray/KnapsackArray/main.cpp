@@ -31,6 +31,16 @@ public:
         }
     }
     
+    Node(int benefitFromStart, int weightFromStart, int id, bool taken[])
+    {
+        this->id = id;
+        this->benefitFromStart = benefitFromStart;
+        this->weightFromStart = weightFromStart;
+        for(int i = 0; i < 11; i++) {
+            this->taken[i] = taken[i];
+        }
+    }
+    
     void changeValues(int benefitFromStart, int weightFromStart, int id, bool taken[])
     {
         this->id = id;
@@ -82,9 +92,9 @@ void KnapsackBFS(int benefit[], int weight[], int size, int maxWeight)
 {
     
     Node bestNode(0, 0, 0);
-    Node node(0, 0, 0);
+    Node root(0, 0, 0);
     //Using queue
-    nodes.push(node);
+    nodes.push(root);
     
     //While we have nodes to build tree from
     while(!nodes.empty()) {
@@ -95,10 +105,8 @@ void KnapsackBFS(int benefit[], int weight[], int size, int maxWeight)
         nodes.pop();
         
         //Set children to push in the queue
-        Node left(parent.benefitFromStart + benefit[parent.id], parent.weightFromStart + weight[parent.id], parent.id+1);
-        Node right(parent.benefitFromStart, parent.weightFromStart, parent.id+1);
-        left.copyTaken(parent);
-        right.copyTaken(parent);
+        Node left(parent.benefitFromStart + benefit[parent.id], parent.weightFromStart + weight[parent.id], parent.id+1, parent.taken);
+        Node right(parent.benefitFromStart, parent.weightFromStart, parent.id+1, parent.taken);
         left.taken[parent.id] = true;
         right.taken[parent.id] = false;
         
@@ -134,9 +142,9 @@ void KnapsackBFS(int benefit[], int weight[], int size, int maxWeight)
 void KnapsackDFS(int benefit[], int weight[], int size, int maxWeight)
 {
     Node bestNode(0, 0, 0);
-    Node node(0, 0, 0);
+    Node root(0, 0, 0);
     //Using stack
-    nodes2.push(node);
+    nodes2.push(root);
     
     //While we have nodes to build tree from
     while(!nodes2.empty()) {
@@ -147,10 +155,8 @@ void KnapsackDFS(int benefit[], int weight[], int size, int maxWeight)
         nodes2.pop();
         
         //Set children to push in the queue
-        Node left(parent.benefitFromStart + benefit[parent.id], parent.weightFromStart + weight[parent.id], parent.id+1);
-        Node right(parent.benefitFromStart, parent.weightFromStart, parent.id+1);
-        left.copyTaken(parent);
-        right.copyTaken(parent);
+        Node left(parent.benefitFromStart + benefit[parent.id], parent.weightFromStart + weight[parent.id], parent.id+1, parent.taken);
+        Node right(parent.benefitFromStart, parent.weightFromStart, parent.id+1, parent.taken);
         left.taken[parent.id] = true;
         right.taken[parent.id] = false;
         
@@ -177,7 +183,7 @@ void KnapsackDFS(int benefit[], int weight[], int size, int maxWeight)
     cout << "The items we need to take is:" << endl;
     for(int i = 0; i < 11; i++) {
         if(bestNode.taken[i]) {
-            cout << i+1 << endl;
+            cout << i+1 << ", ";
         }
     }
 }
