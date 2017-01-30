@@ -127,10 +127,11 @@ void KnapsackBFS(Node *bestNode, Node *node, int benefit[], int weight[], int si
                 bestNode->changeValues(left->parent, left->benefitFromStart, left->weightFromStart, left->id, left->taken);
             }
         }
-        if(parent->id < size){
-            nodes.push(right);
+        if(right->weightFromStart < maxWeight){
+            if(parent->id < size){
+                nodes.push(right);
+            }
         }
-        
     }
 }
 
@@ -168,11 +169,11 @@ void KnapsackDFS(Node *bestNode, Node *node, int benefit[], int weight[], int si
                 bestNode->changeValues(left->parent, left->benefitFromStart, left->weightFromStart, left->id, left->taken);
             }
         }
-        
-        if(parent->id < size){
-            nodes2.push(right);
+        if(right->weightFromStart < maxWeight){
+            if(parent->id < size){
+                nodes2.push(right);
+            }
         }
-        
     }
 }
 
