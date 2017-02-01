@@ -60,8 +60,8 @@ int main(int argc, const char * argv[])
     
     Node *node = new Node(NULL, 0, 0, 0, false);
     
-    KnapsackBFS(bestNode, node, benefit, weight, n, W);
-    //KnapsackDFS(bestNode, node, benefit, weight, n, W);
+    //KnapsackBFS(bestNode, node, benefit, weight, n, W);
+    KnapsackDFS(bestNode, node, benefit, weight, n, W);
     
     
     cout << "The biggest benefit we can get is: " << bestNode->benefitFromStart << endl;
